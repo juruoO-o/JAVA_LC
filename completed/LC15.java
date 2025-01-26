@@ -1,49 +1,37 @@
-
-import java.lang.classfile.Interfaces;
-import java.lang.classfile.components.ClassPrinter;
+import java.net.Inet4Address;
 import java.util.*;
 
-
 //TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
-
-// 点击装订区域中的 <icon src="AllIcons.Actions.Execute"/> 图标。
 public class Main {
     public static void main(String[] args) {
-        int[] nums = {-1, 0, 1, 2, -1, -4};
-        new Solution().threeSum(nums);
-
+        int[] nums1 = {1, 3, 2, 5, 25, 24, 5};
+        int[] nums2 = {1, 2, 3};
+        String s = "-2+ 1";
+        TreeNode root = new TreeNode(1, new TreeNode(2), new TreeNode(3, new TreeNode(4), new TreeNode(5)));
+        new Solution();
+        String string = new Codec().serialize(root);
+        TreeNode newRoot = new Codec().deserialize(string);
     }
 }
 
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        int n = nums.length;
         Arrays.sort(nums);
         List<List<Integer>> ans = new ArrayList<>();
-        for (int i = 0; i < n - 2; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            int j = i + 1, k = n - 1;
-            while (j < k) {
-                while (j < nums.length && j > i + 1 && nums[j] == nums[j - 1])
-                    ++j;
-                if (j == nums.length || j == k)
-                    break;
-                int sum = nums[i] + nums[j] + nums[k];
-                if (sum > 0) {
-                    k--;
-                } else if (sum < 0) {
-                    j++;
-                } else {
-                    List<Integer> list = new ArrayList<Integer>();
-                    list.add(nums[i]);
-                    list.add(nums[j]);
-                    list.add(nums[k]);
-                    ans.add(list);
-                    ++j;
+        int len = nums.length;
+        for (int i = 0; i < len-2; ++i) {
+            for (int j = i + 1; j < len-1; ++j) {
+                int idx = Arrays.binarySearch(nums, j + 1, len, -nums[i] - nums[j]);
+                if (idx>=0){
+                    List<Integer> tmp = new ArrayList<>();
+                    tmp.add(nums[i]);
+                    tmp.add(nums[j]);
+                    tmp.add(nums[idx]);
+                    ans.add(tmp);
                 }
+                while (j<len-1 && nums[j]==nums[j+1]) ++j;
             }
+            while (i<len-2 && nums[i]==nums[i+1]) ++i;
         }
         return ans;
     }

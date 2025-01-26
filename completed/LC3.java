@@ -15,21 +15,26 @@ public class Main {
 }
 
 class Solution {
-    public int trap(int[] height) {
-        int len = height.length;
-        int[] left = new int[len];
-        int[] right = new int[len];
-        left[0] = height[0];
-        for (int i = 1; i < len; i++) {
-            left[i] = Math.max(left[i - 1], height[i]);
-        }
-        right[len - 1] = height[len - 1];
-        for (int j = len - 2; j >= 0; --j) {
-            right[j] = Math.max(right[j + 1], height[j]);
-        }
+    public int lengthOfLongestSubstring(String s) {
+        int[] cnt = new int[128];
         int ans = 0;
-        for (int i = 1; i < len - 1; ++i) {
-            ans +=Math.min(left[i],right[i])-height[i];
+        char[] arr = s.toCharArray();
+        int p1 = 0, p2 = 0;
+        int len = arr.length;
+        while (p2 < len) {
+            while (p2 < len && cnt[(int) arr[p2]] == 0) {
+                cnt[(int) arr[p2]]++;
+                p2++;
+            }
+            ans = Math.max(ans, p2 - p1);
+            if (p2 < len) {
+                while (arr[p1] != arr[p2]) {
+                    cnt[(int) arr[p1]]--;
+                    ++p1;
+                }
+                ++p1;
+                ++p2;
+            }
         }
         return ans;
     }
