@@ -1,36 +1,50 @@
-//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
+import com.sun.security.auth.UnixNumericGroupPrincipal;
 
-import java.lang.invoke.TypeDescriptor;
-import java.security.PrivilegedAction;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
-// 点击装订区域中的 <icon src="AllIcons.Actions.Execute"/> 图标。
+//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
 public class Main {
     public static void main(String[] args) {
-        int[][] nums = {
-                {1, 2, 3, 4, 5},
-                {6, 7, 8, 9, 10},
-                {11, 12, 13, 14, 15},
-                {16, 17, 18, 19, 20},
-                {21, 22, 23, 24, 25}
+        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
+        int[] nums2 = {1, 2, 3, 4};
+        String s = "-2+ 1";
+        int[][] interval = {
+                {1, 3}, {8, 10}, {15, 18}, {2, 6}
         };
-        new Solution().searchMatrix(nums, 5);
+        char[][] board = {
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+        int[][] arr = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        int[][] arr1 = {{1, 3}};
+        int[] height = {1, 2, 87, 87, 87, 2, 1};
+
+        new Solution().intToRoman(3749);
     }
 }
 
 class Solution {
     public String longestCommonPrefix(String[] strs) {
-        String ans = strs[0];
-        for (int i = 1; i < strs.length; ++i) {
-            String tmp = strs[i];
-            int range = Math.min(ans.length(), tmp.length());
-            int j=0;
-            for (; j < range; j++) {
-                if(ans.charAt(j)!=tmp.charAt(j))
-                    break;
-            }
-            ans = ans.substring(0,j);
+        int len = strs[0].length();
+        for (int i = 1; i < strs.length; i++) {
+            len = Math.min(prefix(strs[0],strs[i]),len);
         }
-        return ans;
+        return strs[0].substring(0,len);
+    }
+
+    private int prefix(String str1, String str2) {
+        int len = Math.min(str1.length(),str2.length());
+        for (int i = 0; i < len; i++) {
+            if (str1.charAt(i)!=str2.charAt(i)){
+                return i;
+            }
+        }
+        return len;
     }
 }

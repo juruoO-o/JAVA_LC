@@ -1,124 +1,64 @@
-import java.awt.image.AreaAveragingScaleFilter;
-import java.net.Inet4Address;
 import java.util.*;
 
-//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
 public class Main {
     public static void main(String[] args) {
-        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
-        int[] nums2 = {1, 2, 3};
-        String s = "-2+ 1";
-        TreeNode root = new TreeNode(1, new TreeNode(2), new TreeNode(3, new TreeNode(4), new TreeNode(5)));
-        new Solution().minWindow("bbaac", "aba");
-        String string = new Codec().serialize(root);
-        TreeNode newRoot = new Codec().deserialize(string);
-    }
-}
-
-class Solution {
-    public String minWindow(String s, String t) {
-        if (t.length() > s.length()) {
-            return "";
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        //统计
-        for (char c : t.toCharArray()) {
-            if (map.get(c) == null) {
-                map.put(c, -1);
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int[] tree = new int[n + 1];
+        List<List<Integer>> red = new ArrayList<>();
+        int u, v, w, c;
+        int unique = n;
+        int sum = 0;
+        while (m-- > 0) {
+            u = in.nextInt();
+            v = in.nextInt();
+            w = in.nextInt();
+            c = in.nextInt();
+            if (c == 1) {
+                ArrayList<Integer> edge = new ArrayList<>();
+                edge.add(u);
+                edge.add(v);
+                edge.add(w);
+                red.add(edge);
+                sum += w;
             } else {
-                map.put(c, map.get(c) - 1);
-            }
-        }
-        String ans = "";
-        int notCover = map.size();
-        int start = 0, end = 0;
-        //排除前缀无关字符
-        while (start < s.length() && map.get(s.charAt(start)) == null) {
-            start++;
-        }
-        if (start == s.length()) {
-            return ans;
-        }
-        end = start;
-
-        //开始找第一段符合要求的
-        while (end < s.length() && notCover > 0) {
-            Integer i = map.get(s.charAt(end));
-            if (null != i) {
-                if (i == -1) {
-                    notCover--;
+                while (tree[u] != 0) {
+                    u = tree[u];
                 }
-                map.put(s.charAt(end), i + 1);
-            }
-            end++;
-        }
-        if (notCover == 0) {
-            while (start < s.length() && (map.get(s.charAt(start)) == null || map.get(s.charAt(start)) > 0)) {
-                if (map.get(s.charAt(start)) != null) {
-                    map.put(s.charAt(start), map.get(s.charAt(start)) - 1);
+                while (tree[v] != 0) {
+                    v = tree[v];
                 }
-                start++;
-            }
-
-            String tmp = s.substring(start, end);
-            if (tmp.length() < ans.length()) {
-                ans = tmp;
-            }
-
-            ans = s.substring(start, end);
-        }
-        while (end < s.length()) {
-            while (notCover == 0) {
-                char c = s.charAt(start);
-                Integer i = map.get(c);
-                if (i != null && i == 0) {
-                    notCover++;
-                }
-                if (null != i) {
-                    map.put(c, i - 1);
-                }
-                ++start;
-            }
-            //去掉无关字符
-            while (start < end && map.get(s.charAt(start)) == null) {
-                ++start;
-            }
-            while (notCover > 0 && end < s.length()) {
-                char c = s.charAt(end);
-                Integer i = map.get(c);
-                if (i != null && i == -1) {
-                    notCover--;
-                }
-                if (i != null) {
-                    map.put(c, i + 1);
-                }
-                end++;
-            }
-            while (start < s.length() && (map.get(s.charAt(start)) == null || map.get(s.charAt(start)) > 0)) {
-                if (map.get(s.charAt(start)) != null) {
-                    map.put(s.charAt(start), map.get(s.charAt(start)) - 1);
-                }
-                start++;
-            }
-            if (notCover == 0) {
-                String tmp = s.substring(start, end);
-                if (tmp.length() < ans.length()) {
-                    ans = tmp;
+                if (u != v) {
+                    tree[v] = u;
+                    unique--;
                 }
             }
         }
-        while (start < s.length() && (map.get(s.charAt(start)) == null || map.get(s.charAt(start)) > 0)) {
-            if (map.get(s.charAt(start)) != null) {
-                map.put(s.charAt(start), map.get(s.charAt(start)) - 1);
-            }
-            start++;
+        red.sort((a, b) -> a.get(2) - b.get(2));
+        int[] ans = new int[n + 1];
+        for (int i = unique; i <= n; i++) {
+            ans[i] = sum;
         }
-        if (notCover == 0) {
-            String tmp = s.substring(start, end);
-            if (tmp.length() < ans.length()) {
-                ans = tmp;
+        for (var edge : red) {
+            u = edge.get(0);
+            v = edge.get(1);
+            while (tree[u] != 0) {
+                u = tree[u];
+            }
+            while (tree[v] != 0) {
+                v = tree[v];
+            }
+            if (u != v) {
+                unique--;
+                sum -= edge.get(2);
+                tree[v]=u;
+                ans[unique] = sum;
             }
         }
-        return ans;
+        for (int i = 1; i < n + 1; i++) {
+            System.out.print(ans[i]);
+            System.out.print(" ");
+        }
     }
 }

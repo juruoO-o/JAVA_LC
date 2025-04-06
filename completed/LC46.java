@@ -1,48 +1,78 @@
+import com.sun.security.auth.UnixNumericGroupPrincipal;
 
-import java.lang.classfile.Interfaces;
-import java.lang.classfile.components.ClassPrinter;
-import java.security.KeyPair;
+import javax.management.ListenerNotFoundException;
+import java.awt.image.AreaAveragingScaleFilter;
+import java.lang.classfile.instruction.CharacterRange;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 //TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
-
-// 点击装订区域中的 <icon src="AllIcons.Actions.Execute"/> 图标。
 public class Main {
     public static void main(String[] args) {
-        int[] nums = {1,2,3};
-        new Solution().permute(nums);
+        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
+        int[] nums2 = {1, 2, 3, 4};
+        String s = "-2+ 1";
+        int[][] interval = {
+                {1, 3}, {8, 10}, {15, 18}, {2, 6}
+        };
+        char[][] board = {
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+        int[][] arr = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        int[][] arr1 = {{10, 16}, {2, 8}, {1, 6}, {7, 12}};
+        int[] height = {2, 5};
+        List<String> strs = List.of(new String[]{"hot", "dot", "dog", "lot", "log", "cog"});
+        new Solution().combine(4, 2);
 
+    }
+}
+
+class Pair<F, S> {
+    F first;
+    S second;
+
+    Pair(F f, S s) {
+        first = f;
+        second = s;
     }
 }
 
 class Solution {
-    boolean visit[];
-    List<List<Integer>> ans;
-    List<Integer> cur;
+    List<List<Integer>> ans = new ArrayList<>();
+    List<Integer> tmp = new ArrayList<>();
     int len;
+    boolean[] visit;
+
     public List<List<Integer>> permute(int[] nums) {
         len = nums.length;
         visit = new boolean[len];
-        ans = new ArrayList<>();
-        cur = new ArrayList<>();
-        recursion(nums);
+        rec(nums);
         return ans;
     }
-    private void recursion(int[] nums){
-        boolean flag = true;
-        for (int i = 0; i < len; i++) {
-            if(!visit[i]){
-                flag = false;
-                visit[i]=true;
-                cur.add(nums[i]);
-                recursion(nums);
-                cur.removeLast();
-                visit[i] = false;
-            }
+    void rec(int[] nums){
+        if (tmp.size()==len){
+            ans.add(new ArrayList<>(tmp));
+            return;
         }
-        if(flag){
-            ans.add(new ArrayList<>(cur));
+        for (int i = 0; i < len; i++) {
+            if (!visit[i]){
+                visit[i]=true;
+                tmp.add(nums[i]);
+                rec(nums);
+                tmp.removeLast();
+                visit[i]=false;
+            }
         }
     }
 }
+

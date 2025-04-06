@@ -1,27 +1,43 @@
-//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
+import com.sun.security.auth.UnixNumericGroupPrincipal;
 
-import java.lang.invoke.TypeDescriptor;
-import java.security.PrivilegedAction;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
-// 点击装订区域中的 <icon src="AllIcons.Actions.Execute"/> 图标。
+//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
 public class Main {
     public static void main(String[] args) {
+        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
+        int[] nums2 = {1, 2, 3, 4};
+        String s = "-2+ 1";
+        int[][] interval = {
+                {1, 3}, {8, 10}, {15, 18}, {2, 6}
+        };
+        char[][] board = {
+                {'A', 'B', 'C', 'E'},
+                {'S', 'F', 'C', 'S'},
+                {'A', 'D', 'E', 'E'}
+        };
+        int[][] arr = {
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        int[][] arr1 = {{1, 3}};
+        int[] height = {5, 2, 3, 1};
 
-        String s = new Solution().largestNumber(new int[]{3, 30, 34, 5, 9});
-        System.out.printf(s);
+        new Solution();
     }
 }
 
 class Solution {
     public int majorityElement(int[] nums) {
+        int ans = -1;
         int cnt = 0;
-        int ans = 1;
-        for(int ele : nums){
-            if(cnt == 0){
-                cnt=1;
-                ans=ele;
-            }else if(ele==ans){
+        for(int ele:nums){
+            if (cnt==0){
+                ans = ele;
+                cnt++;
+            }else if (ans == ele){
                 cnt++;
             }else{
                 cnt--;
