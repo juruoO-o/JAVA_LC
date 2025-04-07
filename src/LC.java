@@ -4,9 +4,8 @@ public class LC {
     public static void main(String[] args) throws InterruptedException {
         int[][] board = {{-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {
                 -1, 35, -1, -1, 13, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 15, -1, -1, -1, -1}};
-        int[] nums = {1, 2, 4, 8};
-        new Solution().largestDivisibleSubset(nums);
-
+        int[] nums = {2, 2, 3, 5};
+        new Solution().canPartition(nums);
 
     }
 }
@@ -22,35 +21,28 @@ class Pair<F, S> {
 }
 
 class Solution {
-    public List<Integer> largestDivisibleSubset(int[] nums) {
-        Arrays.sort(nums);
+    public boolean canPartition(int[] nums) {
         int len = nums.length;
-        int[] dp = new int[len];
-        ArrayList[] record = new ArrayList[len];
-        int ansSize = -1;
-        List<Integer> ans = null;
+        int acc = 0;
         for (int i = 0; i < len; i++) {
-            int maxIndex = -1;
-            dp[i]=1;
-            for (int j = i - 1; j >= 0; --j){
-                if (nums[i]%nums[j]==0 && dp[j]+1>dp[i]){
-                    dp[i]=dp[j]+1;
-                    maxIndex=j;
-                }
-            }
-            ArrayList list ;
-            if (maxIndex==-1){
-                list = new ArrayList();
-            }else{
-                list=  new ArrayList(record[maxIndex]);
-            }
-            list.add(nums[i]);
-            record[i] = list;
-            if (record[i].size() > ansSize){
-                ansSize=record[i].size();
-                ans = record[i];
+            acc += nums[i];
+        }
+        if (acc % 2 != 0) {
+            return false;
+        }
+        int target = acc >> 1;
+        boolean[][] dp = new boolean[len][target + 1];
+        if (nums[0]>target)
+            return false;
+        dp[0][0] = dp[0][nums[0]] = true;
+        for (int i = 1; i < len; i++) {
+            int num = nums[i];
+            if(num>target)
+                return false;
+            for (int j = 0; j < target + 1; j++) {
+                dp[i][j] = dp[i-1][j] || (j>=num ? dp[i-1][j-num]:false);
             }
         }
-        return ans;
+        return dp[len-1][target];
     }
 }

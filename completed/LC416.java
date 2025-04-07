@@ -1,56 +1,48 @@
-import java.lang.classfile.instruction.CharacterRange;
 import java.util.*;
 
-//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
-public class Main {
-    public static void main(String[] args) {
-        int[] nums1 = {1, 3, -1, -3, 5, 3, 6, 7};
-        int[] nums2 = {1, 2, 3, 4};
-        String s = "-2+ 1";
-        int[][] interval = {
-                {1, 3}, {8, 10}, {15, 18}, {2, 6}
-        };
-        TreeNode root = new TreeNode(1000000000,
-                new TreeNode(1000000000,
-                        new TreeNode(294967296,
-                                new TreeNode(1000000000,
-                                        new TreeNode(1000000000,
-                                                new TreeNode(1000000000), null), null), null), null), null);
-        char[][] board = {
-                {'A', 'B', 'C', 'E'},
-                {'S', 'F', 'C', 'S'},
-                {'A', 'D', 'E', 'E'}
-        };
-        int[][] arr = {
-                {1, 3, 5, 7},
-                {10, 11, 16, 20},
-                {23, 30, 34, 60}
-        };
-        int[][] arr1 = {{1, 3}};
-        int[] height = {1,5,11,5};
-        new Solution().canPartition(height);
+public class LC {
+    public static void main(String[] args) throws InterruptedException {
+        int[][] board = {{-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {
+                -1, 35, -1, -1, 13, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 15, -1, -1, -1, -1}};
+        int[] nums = {2, 2, 3, 5};
+        new Solution().canPartition(nums);
 
+    }
+}
 
+class Pair<F, S> {
+    F first;
+    S second;
+
+    Pair(F f, S s) {
+        first = f;
+        second = s;
     }
 }
 
 class Solution {
     public boolean canPartition(int[] nums) {
-        boolean[] reach = new boolean[20000];
-        reach[0] = true;
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            sum += nums[i];
-            for (int j = sum; j >=0; j--) {
-                if (j-nums[i]>=0 &&reach[j-nums[i]]) {
-                    reach[j] = true;
-                }
+        int len = nums.length;
+        int acc = 0;
+        for (int i = 0; i < len; i++) {
+            acc += nums[i];
+        }
+        if (acc % 2 != 0) {
+            return false;
+        }
+        int target = acc >> 1;
+        boolean[][] dp = new boolean[len][target + 1];
+        if (nums[0]>target)
+            return false;
+        dp[0][0] = dp[0][nums[0]] = true;
+        for (int i = 1; i < len; i++) {
+            int num = nums[i];
+            if(num>target)
+                return false;
+            for (int j = 0; j < target + 1; j++) {
+                dp[i][j] = dp[i-1][j] || (j>=num ? dp[i-1][j-num]:false);
             }
         }
-        if (sum%2==1)
-            return false;
-        else{
-            return reach[sum>>1];
-        }
+        return dp[len-1][target];
     }
 }
