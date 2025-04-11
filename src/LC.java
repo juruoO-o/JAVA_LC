@@ -1,11 +1,15 @@
+import javax.management.relation.InvalidRelationTypeException;
 import javax.print.attribute.standard.PrinterURI;
+import javax.swing.*;
+import java.awt.image.AreaAveragingScaleFilter;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class LC {
     public static void main(String[] args) throws InterruptedException {
         int[][] board = {{-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 35, -1, -1, 13, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 15, -1, -1, -1, -1}};
-        int[] nums = {8,8};
-        new Solution().searchRange(nums, 8);
+        int[] nums = {8, 8};
+        new Solution().numberOfPowerfulInt(141, 148, 9, "9");
 
     }
 }
@@ -20,50 +24,44 @@ class Pair<F, S> {
     }
 }
 
+class Tri<F, S, T> {
+    F first;
+    S second;
+    T third;
+
+    Tri(F f, S s, T t) {
+        first = f;
+        second = s;
+        third = t;
+    }
+}
 
 class Solution {
-    public int[] searchRange(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        int mid = -1;
-        int[] ans = new int[2];
-        while (left <= right) {
-            mid = (left + right) >> 1;
-            if (nums[mid] == target) {
-                break;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        List<List<Integer>> ans = new ArrayList<>();
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        int[] first = new int[3];
+        first[0] = nums1[0] + nums2[0];
+        pq.offer(first);
+        while (k-- > 0) {
+            int[] poll = pq.poll();
+            ArrayList<Integer> tmp = new ArrayList<>();
+            tmp.add(poll[1]);
+            tmp.add(poll[2]);
+            ans.add(tmp);
+            int[] ints = new int[3];
+            if (poll[1] + 1 < nums1.length && poll[2] + 1 < nums2.length && nums1[poll[1] + 1] + nums2[poll[2]] < nums1[poll[1]] + nums2[poll[2] + 1]) {
+                ints[0] = nums1[poll[1] + 1] + nums2[poll[2]];
+                ints[1] = poll[1] + 1;
+                ints[2] = poll[2];
             } else {
-                left = mid + 1;
+                ints[0] = nums1[poll[1]] + nums2[poll[2] + 1];
+                ints[1] = poll[1];
+                ints[2] = poll[2] + 1;
             }
-        }
-        if (left > right) {
-            ans[0] = ans[1] = -1;
-        } else {
-            int lleft = 0, lright = mid;
-            int rleft = mid, rright = nums.length - 1;
-            while (lleft <= lright) {
-                mid = (lleft + lright) >> 1;
-                if (nums[mid] == target && (mid == 0 || nums[mid - 1] != target)) {
-                    ans[0] = mid;
-                    break;
-                } else if (nums[mid] < target) {
-                    lleft = mid + 1;
-                } else {
-                    lright = mid-1;
-                }
-            }
-            while (rleft <= rright) {
-                mid = (rleft + rright) >> 1;
-                if (nums[mid] == target && (mid == nums.length - 1 || nums[mid + 1] != target)) {
-                    ans[1] = mid;
-                    break;
-                } else if (nums[mid] > target) {
-                    rright = mid - 1;
-                } else {
-                    rleft = mid+1;
-                }
-            }
+            pq.offer(ints);
         }
         return ans;
     }
+
 }
