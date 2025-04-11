@@ -9,7 +9,10 @@ public class LC {
     public static void main(String[] args) throws InterruptedException {
         int[][] board = {{-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 35, -1, -1, 13, -1}, {-1, -1, -1, -1, -1, -1}, {-1, 15, -1, -1, -1, -1}};
         int[] nums = {8, 8};
-        new Solution().numberOfPowerfulInt(141, 148, 9, "9");
+        int[][] obs = new int[][]{
+                {2, 2}
+        };
+        new Solution().robot("URR", obs, 3, 2);
 
     }
 }
@@ -37,31 +40,19 @@ class Tri<F, S, T> {
 }
 
 class Solution {
-    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        List<List<Integer>> ans = new ArrayList<>();
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
-        int[] first = new int[3];
-        first[0] = nums1[0] + nums2[0];
-        pq.offer(first);
-        while (k-- > 0) {
-            int[] poll = pq.poll();
-            ArrayList<Integer> tmp = new ArrayList<>();
-            tmp.add(poll[1]);
-            tmp.add(poll[2]);
-            ans.add(tmp);
-            int[] ints = new int[3];
-            if (poll[1] + 1 < nums1.length && poll[2] + 1 < nums2.length && nums1[poll[1] + 1] + nums2[poll[2]] < nums1[poll[1]] + nums2[poll[2] + 1]) {
-                ints[0] = nums1[poll[1] + 1] + nums2[poll[2]];
-                ints[1] = poll[1] + 1;
-                ints[2] = poll[2];
-            } else {
-                ints[0] = nums1[poll[1]] + nums2[poll[2] + 1];
-                ints[1] = poll[1];
-                ints[2] = poll[2] + 1;
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        Arrays.sort(coins);
+        Arrays.fill(dp,amount+1);
+        dp[0]=0;
+        for (int i = 0; i <= amount ; i++) {
+            for(int coin:coins){
+                if (coin>i){
+                    break;
+                }
+                dp[i] = Math.min(dp[i],dp[i-coin]+1);
             }
-            pq.offer(ints);
         }
-        return ans;
+        return dp[amount]==amount+1 ? -1:dp[amount];
     }
-
 }
