@@ -19,22 +19,25 @@ public class LC {
 
 
 class Solution {
-    public int countGoodTriplets(int[] arr, int a, int b, int c) {
-        int ans=0;
-        int tmp ;
-        for (int i = 0; i < arr.length - 2; i++) {
-            for (int j = i+1; j < arr.length - 1; j++) {
-                if (Math.abs(arr[i]-arr[j])>a){
-                    continue;
-                }
-                for (int k = j+1; k < arr.length; k++) {
-                    if (Math.abs(arr[i]-arr[j])<=a &&
-                            Math.abs(arr[k]-arr[j])<=b &&
-                            Math.abs(arr[i]-arr[k])<=c){
-                        ans++;
-                    }
-                }
+    long mod = (long) (1e9) + 7;
+
+    public int countGoodNumbers(long n) {
+        long odd = n/2;
+        long even = n-odd;
+        return (int)(quickMul(4,odd)*quickMul(5,even)%mod);
+    }
+
+    long quickMul(long base, long p) {
+        long ans = 1;
+        long contri = base;
+        while (p > 0) {
+            if (p % 2 == 1) {
+                ans *= contri;
             }
+            ans %= mod;
+            contri *= contri;
+            contri%=mod;
+            p /= 2;
         }
         return ans;
     }
