@@ -1,8 +1,3 @@
-import javax.management.relation.InvalidRelationTypeException;
-import javax.print.attribute.standard.PrinterURI;
-import javax.swing.*;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class LC {
@@ -12,21 +7,40 @@ public class LC {
         int[][] obs = new int[][]{
                 {2, 2}
         };
-        new Solution().myPow(2.0, -2147483648);
+        new Solution().decodeString("3[a2[c]]");
 
     }
 }
 
 
 class Solution {
-    public long[] sumOfThree(long num) {
-        if (num % 3 != 0) {
-            return new long[0];
+    public String decodeString(String s) {
+        Stack<Integer> stkNum = new Stack<>();
+        Stack<String> stkStr = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+        int num = 0;
+        for (char c : s.toCharArray()) {
+            if (c >= '0' && c <= '9') {
+                num *= 10;
+                num += c - '0';
+            } else if (c == '[') {
+                stkNum.push(num);
+                num = 0;
+                stkStr.push(sb.toString());
+                sb = new StringBuilder();
+            }else if (c==']'){
+                int times = stkNum.pop();
+                String son = sb.toString();
+                sb = new StringBuilder();
+                sb.append(stkStr.pop());
+                for (int i = 0; i < times; i++) {
+                    sb.append(son);
+                }
+//                stkStr.push(sb.toString());
+            }else{
+                sb.append(c);
+            }
         }
-        long[] ans = new long[3];
-        ans[1] = num / 3;
-        ans[0] = ans[1] - 1;
-        ans[2] = ans[1] + 1;
-        return ans;
+        return sb.toString();
     }
 }
