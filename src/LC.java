@@ -7,40 +7,14 @@ public class LC {
         int[][] obs = new int[][]{
                 {2, 2}
         };
-        new Solution().decodeString("3[a2[c]]");
+        new Solution();
 
     }
 }
 
 
 class Solution {
-    public String decodeString(String s) {
-        Stack<Integer> stkNum = new Stack<>();
-        Stack<String> stkStr = new Stack<>();
-        StringBuilder sb = new StringBuilder();
-        int num = 0;
-        for (char c : s.toCharArray()) {
-            if (c >= '0' && c <= '9') {
-                num *= 10;
-                num += c - '0';
-            } else if (c == '[') {
-                stkNum.push(num);
-                num = 0;
-                stkStr.push(sb.toString());
-                sb = new StringBuilder();
-            }else if (c==']'){
-                int times = stkNum.pop();
-                String son = sb.toString();
-                sb = new StringBuilder();
-                sb.append(stkStr.pop());
-                for (int i = 0; i < times; i++) {
-                    sb.append(son);
-                }
-//                stkStr.push(sb.toString());
-            }else{
-                sb.append(c);
-            }
-        }
-        return sb.toString();
+    public int minCost(String colors, int[] neededTime) {
+
     }
 }
