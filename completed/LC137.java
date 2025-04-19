@@ -7,7 +7,7 @@ public class LC {
         int[][] obs = new int[][]{
                 {2, 2}
         };
-        new Solution();
+        new Solution().singleNumber(new int[]{2,2,3,2});
 
     }
 }
@@ -16,8 +16,18 @@ public class LC {
 class Solution {
     public int singleNumber(int[] nums) {
         int ans = 0;
-        for (int i = 0; i < nums.length; i++) {
-            ans ^= nums[i];
+        int[] bit = new int[32];
+        for(int num:nums){
+            for (int i = 0; i < 32; i++) {
+                if ((num&1) ==1){
+                    bit[i]++;
+                }
+                num>>>=1;
+            }
+        }
+        for (int i = 31; i >=0 ; i--) {
+            ans<<=1;
+            ans+=bit[i]%3;
         }
         return ans;
     }
