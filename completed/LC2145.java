@@ -7,25 +7,22 @@ public class LC {
         int[][] obs = new int[][]{
                 {2, 2}
         };
-        new Solution().numRabbits(new int[]{0,0,1,1,1});
+        new Solution().rangeBitwiseAnd(5, 7);
 
     }
 }
 
 
 class Solution {
-    public int numRabbits(int[] answers) {
-        int[] cnt = new int[1000];
-        for (int i = 0; i < answers.length; i++) {
-            cnt[answers[i]]++;
+    public int numberOfArrays(int[] differences, int lower, int upper) {
+        long max = 0,min=0;
+        long num = 0;
+        for (int i = 0; i < differences.length; i++) {
+            num+=differences[i];
+            max = Math.max(max,num);
+            min = Math.min(min,num);
         }
-        int ans = 0;
-        ans += cnt[0];
-        for (int i = 1; i < 1000; i++) {
-            int k = i + 1;
-            int v = cnt[i];
-            ans+=( (v / k)*k + (v%k==0?0:k));
-        }
-        return ans;
+        long ans = (upper-lower)-(max-min)+1;
+        return ans<0?0:(int)ans;
     }
 }
