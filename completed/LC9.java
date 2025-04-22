@@ -14,13 +14,17 @@ public class LC {
 
 
 class Solution {
-    public int trailingZeroes(int n) {
-        int ans = 0;
-        int base=5;
-        while (base<=n){
-            ans+=n/base;
-            base*=5;
+    public boolean isPalindrome(int x) {
+        if (x<0){
+            return false;
         }
-        return ans;
+        int init = x;
+        int reversed = 0;
+        while (x>0){
+            reversed*=10;
+            reversed+=x%10;
+            x/=10;
+        }
+        return init==reversed;
     }
 }

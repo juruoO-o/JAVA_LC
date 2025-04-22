@@ -16,10 +16,12 @@ public class LC {
 class Solution {
     public int trailingZeroes(int n) {
         int ans = 0;
-        int base=5;
-        while (base<=n){
-            ans+=n/base;
-            base*=5;
+        for (int i = 5; i <= n; i += 5) {
+            int x = i;
+            while (x % 5 == 0) {
+                x /= 5;
+                ans++;
+            }
         }
         return ans;
     }
