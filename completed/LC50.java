@@ -1,8 +1,3 @@
-import javax.management.relation.InvalidRelationTypeException;
-import javax.print.attribute.standard.PrinterURI;
-import javax.swing.*;
-import java.awt.image.AreaAveragingScaleFilter;
-import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class LC {
@@ -12,31 +7,26 @@ public class LC {
         int[][] obs = new int[][]{
                 {2, 2}
         };
-        new Solution().myPow(2.0,-2147483648);
+        double res = new Solution().myPow(2,-2147483648);
 
     }
 }
 
+
 class Solution {
     public double myPow(double x, int n) {
-        long N = N;
-        boolean flag = N < 0;
-        if (flag) {
-            N = -N;
-        }
-        double ans = 1.0;
-        double contri = x;
-        while (N > 0) {
-            if (N %2 == 1) {
-                ans *= contri;
+        boolean sig = n<0;
+        long p =n;
+        p = sig?-p:p;
+        double ans=1.0;
+        double base = x;
+        while (p>0){
+            if ((p&1)==1){
+                ans*=base;
             }
-            contri *= contri;
-            N/=2;
+            base*=base;
+            p>>=1;
         }
-        if (flag) {
-            return 1.0 / ans;
-        } else {
-            return ans;
-        }
+        return sig?1/ans:ans;
     }
 }
