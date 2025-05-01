@@ -9,20 +9,29 @@ public class LC {
                 {2, 2}
         };
         List<Integer> nums = new ArrayList<>();
-        new Solution().countSubarrays(new int[]{1, 3, 2, 3, 3}, 2);
+        new Solution().wordBreak("leetcode",List.of("leet","code"));
 
     }
 }
 
+
 class Solution {
-    public List<Integer> getRow(int rowIndex) {
-        int[] ans = new int[rowIndex+1];
-        for (int i = 0; i <= rowIndex; i++) {
-            ans[i]=1;
-            for(int j=i-1;j>0;--j){
-                ans[j] +=ans[j-1];
+    public boolean wordBreak(String s, List<String> wordDict) {
+        int len = s.length();
+        boolean[] dp = new boolean[len+1];
+        dp[0]=true;
+        for (int i = 0; i <= len; i++) {
+            for (String string : wordDict) {
+                if (string.length()>i){
+                    continue;
+                }else {
+                    dp[i] = dp[i-string.length()] && s.substring(i-string.length(),i).equals(string);
+                    if (dp[i]){
+                        break;
+                    }
+                }
             }
         }
-        return Arrays.stream(ans).boxed().collect(Collectors.toList());
+        return dp[len];
     }
 }

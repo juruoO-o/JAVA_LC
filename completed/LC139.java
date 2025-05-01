@@ -1,17 +1,16 @@
 import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-//TIP 要<b>运行</b>代码，请按 <shortcut actionId="Run"/> 或
-public class Main {
-    public static void main(String[] args) {
-        String s = "1+2*5/3+6/4*2";
-        int[] nums1 = {0, 1, 1, 1, 1};
-        int[] nums2 = {1, 2};
-        List<String> str = new ArrayList<>();
-        str.add("dog")
-        str.add("s");
-        str.add("gs");
-        new Solution().wordBreak(new String("dogs"), str);
-        System.out.println("abc".compareTo("ab"));
+public class LC {
+    public static void main(String[] args) throws InterruptedException {
+        int[][] obs = new int[][]{
+                {2, 2}
+        };
+        List<Integer> nums = new ArrayList<>();
+        new Solution().wordBreak("leetcode",List.of("leet","code"));
+
     }
 }
 
@@ -19,19 +18,16 @@ public class Main {
 class Solution {
     public boolean wordBreak(String s, List<String> wordDict) {
         int len = s.length();
-        boolean[] dp = new boolean[len + 1];
-        dp[0] = true;
-        for (int i = 1; i <= len; ++i) {
-            for (String str : wordDict) {
-                if (dp[i]){
-                    break;
-                }
-                int strlen = str.length();
-                if (strlen > i) {
+        boolean[] dp = new boolean[len+1];
+        dp[0]=true;
+        for (int i = 0; i <= len; i++) {
+            for (String string : wordDict) {
+                if (string.length()>i){
                     continue;
-                }else{
-                    if (s.substring(i-strlen,i).equals(str)){
-                        dp[i] = dp[i-strlen];
+                }else {
+                    dp[i] = dp[i-string.length()] && s.substring(i-string.length(),i).equals(string);
+                    if (dp[i]){
+                        break;
                     }
                 }
             }
