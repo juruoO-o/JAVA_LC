@@ -1,6 +1,5 @@
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LC {
@@ -15,14 +14,11 @@ public class LC {
 }
 
 class Solution {
-    public List<Integer> getRow(int rowIndex) {
-        int[] ans = new int[rowIndex+1];
-        for (int i = 0; i <= rowIndex; i++) {
-            ans[i]=1;
-            for(int j=i-1;j>0;--j){
-                ans[j] +=ans[j-1];
-            }
+    public double nthPersonGetsNthSeat(int n) {
+        if (n==1){
+            return 1.0;
+        }else{
+            return 0.5;
         }
-        return Arrays.stream(ans).boxed().collect(Collectors.toList());
     }
 }
