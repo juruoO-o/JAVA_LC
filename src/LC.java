@@ -9,29 +9,23 @@ public class LC {
                 {2, 2}
         };
         List<Integer> nums = new ArrayList<>();
-        new Solution().wordBreak("leetcode",List.of("leet","code"));
+        new Solution();
 
     }
 }
 
-
 class Solution {
-    public boolean wordBreak(String s, List<String> wordDict) {
-        int len = s.length();
-        boolean[] dp = new boolean[len+1];
-        dp[0]=true;
-        for (int i = 0; i <= len; i++) {
-            for (String string : wordDict) {
-                if (string.length()>i){
-                    continue;
-                }else {
-                    dp[i] = dp[i-string.length()] && s.substring(i-string.length(),i).equals(string);
-                    if (dp[i]){
-                        break;
-                    }
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp,amount+1);
+        dp[0]=0;
+        for (int i = 1; i < amount + 1; i++) {
+            for (int coin : coins) {
+                if (coin<=i){
+                    dp[i] = Math.min(dp[i],dp[i-coin]+1);
                 }
             }
         }
-        return dp[len];
+        return dp[amount]==amount+1?-1:dp[amount];
     }
 }
