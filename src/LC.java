@@ -14,46 +14,19 @@ public class LC {
 
 
 class Solution {
-    class point {
-        public int val;
-        public int x;
-        public int y;
-        int sig;
-
-        public point(int val, int x, int y, int sig) {
-            this.val = val;
-            this.x = x;
-            this.y = y;
-            this.sig = sig;
-        }
-    }
-
-    public int minTimeToReach(int[][] moveTime) {
-        int[] x = {0, 1, 0, -1};
-        int[] y = {1, 0, -1, 0};
-        PriorityQueue<point> pq = new PriorityQueue<>((a, b) -> a.val - b.val);
-        int m = moveTime.length;
-        int n = moveTime[0].length;
-        boolean[][] visit = new boolean[m][n];
-        pq.add(new point(0, 0, 0, 0));
-        while (!pq.isEmpty()) {
-            point poll = pq.poll();
-            //不过滤会超时
-            if (visit[poll.x][poll.y]) {
-                continue;
-            }
-            visit[poll.x][poll.y] = true;
-            if (poll.x == m - 1 && poll.y == n - 1) {
-                return poll.val;
-            }
-            for (int i = 0; i < 4; i++) {
-                int tx = x[i] + poll.x;
-                int ty = y[i] + poll.y;
-                if (tx >= 0 && tx < m && ty >= 0 && ty < n && !visit[tx][ty]) {
-                    pq.add(new point(Math.max(moveTime[tx][ty], poll.val) + 1 + poll.sig, tx, ty, 1 - poll.sig));
+    public int lengthOfLIS(int[] nums) {
+        int ans = -1;
+        int len = nums.length;
+        int[] dp = new int[len];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i] = 1;
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[i]>nums[j]){
+                    dp[i] = Math.max(dp[i],dp[j]+1);
                 }
             }
+            ans = Math.max(ans,dp[i]);
         }
-        return -1;
+        return ans;
     }
 }
