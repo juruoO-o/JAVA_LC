@@ -6,9 +6,7 @@ import java.util.stream.IntStream;
 
 public class LC {
     public static void main(String[] args) {
-        new Solution().minTimeToReach(new int[][]{
-                {0, 58}, {27, 69}
-        });
+        new Solution();
     }
 }
 
