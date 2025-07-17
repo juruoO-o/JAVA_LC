@@ -6,18 +6,49 @@ import java.util.stream.IntStream;
 
 public class LC {
     public static void main(String[] args) {
-        new Solution().lengthOfLongestSubstring("abcabcbb");
+        new Solution().findAnagrams("cbaebabacd","abc");
     }
 }
 
-
 class Solution {
-    public int getDecimalValue(ListNode head) {
-        int ans=0;
-        while (head!=null){
-            ans<<=1;
-            ans|= head.val;
-            head=head.next;
+    public List<Integer> findAnagrams(String s, String p) {
+        if (s.length()<p.length()){
+            return new ArrayList<>();
+        }
+        int[] cnt = new int[26];
+        int noneZero = 0;
+        for (char c : p.toCharArray()) {
+            if (cnt[c - 'a'] == 0) {
+                noneZero++;
+            }
+            cnt[c - 'a']++;
+        }
+        List<Integer> ans = new ArrayList<>();
+        char[] arr = s.toCharArray();
+        int left = 0, right = 0;
+        for (; right < p.length(); right++) {
+            cnt[arr[right] - 'a']--;
+            if (cnt[arr[right] - 'a'] == 0) {
+                noneZero--;
+            }
+        }
+        if (noneZero == 0) {
+            ans.add(0);
+        }
+        for (; right < arr.length;) {
+            if (cnt[arr[left]-'a']==0){
+                noneZero++;
+            }
+            cnt[arr[left]-'a']++;
+            cnt[arr[right]-'a']--;
+            if (cnt[arr[right]-'a']==0){
+                noneZero--;
+            }
+            left++;
+            right++;
+            if (noneZero==0){
+                ans.add(left);
+            }
         }
         return ans;
     }
