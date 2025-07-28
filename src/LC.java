@@ -7,28 +7,22 @@ public class LC {
     }
 }
 
-
 class Solution {
-    public int countMaxOrSubsets(int[] nums) {
-        int enums = 1 << nums.length;
-        int ans=0;
-        int max=-1;
-        for (int i = 1; i < enums; i++) {
-            int or = 0;
-            int mask=1;
-            for (int j = 0; j < nums.length; j++) {
-                if ((i&mask)!=0){
-                    or|=nums[j];
-                }
-                mask<<=1;
-            }
-            if (or>max){
-                max=or;
-                ans=1;
-            }else if (or == max){
-                ans++;
-            }
+    public void rotate(int[] nums, int k) {
+        k%=nums.length;
+        reverse(nums, 0, nums.length-k-1);
+        reverse(nums, nums.length-k, nums.length - 1);
+        reverse(nums, 0, nums.length - 1);
+
+    }
+
+    public void reverse(int[] nums, int begin, int end) {
+        while (begin<end){
+            nums[begin]+=nums[end];
+            nums[end] = nums[begin]-nums[end];
+            nums[begin]-=nums[end];
+            begin++;
+            end--;
         }
-        return ans;
     }
 }
